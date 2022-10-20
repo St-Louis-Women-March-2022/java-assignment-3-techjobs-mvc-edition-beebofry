@@ -33,17 +33,13 @@ public class SearchController {
     public String displaySearchResults(Model model,
                                        @RequestParam String searchType,
                                        @RequestParam String searchTerm){
-        ArrayList<Job> jobs = new ArrayList<>();
         if (searchTerm.equals("") || searchTerm.equalsIgnoreCase("All")){
-            for (Job job : JobData.findAll()) {
-                jobs.add(job);
-            }
+            model.addAttribute("jobs", JobData.findAll());
+
         } else {
-            for (Job job : JobData.findByColumnAndValue(searchType, searchTerm)) {
-                jobs.add(job);
-            }
+            model.addAttribute("jobs", JobData.findByColumnAndValue(searchType, searchTerm));
+
         }
-        model.addAttribute("jobs", jobs);
         model.addAttribute("columns", ListController.columnChoices);
         return "search";
 }
